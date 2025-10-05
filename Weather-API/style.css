@@ -1,0 +1,39 @@
+/* --- Minimal Reset --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* { margin: 0; }
+body {
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+  background: #fff;
+  color: #222;
+}
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+input, button, textarea, select {
+  font: inherit;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* --- Simple Utility Classes --- */
+.container { max-width: 960px; margin: 0 auto; padding: 1rem; }
+.flex { display: flex; }
+.center { align-items: center; justify-content: center; }
+.gap { gap: 1rem; }
+.btn {
+  display: inline-block;
+  padding: .5rem 1rem;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 4px;
+}
+.btn:hover { background: #1e4bb8; }
