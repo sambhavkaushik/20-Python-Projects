@@ -1,32 +1,104 @@
-todos = []
+def addTotal(num):
+    sum = 0
+    for i in range(0,num):
+        sum += i
 
+    return sum   
+
+
+file_path = r"C:\Users\sambh\OneDrive\Desktop\Python code\20-Python-Projects\Task-Manager-App\todos.txt" #file apth
 
 while True:
     user_action = input("Enter add, show,edit, complete or exit:")
-    match user_action:
-        case 'add':
-            todo = input("Enter a todo:")
-            todos.append(todo)
-        case 'show':
-            for i in range(0, len(todos)):
-                print(f"{i+1}. {todos[i]}")
-            print()
-        case 'edit':
-            number = int(input("Enter S.no of the todo to edit:"))
+
+
+    if user_action.startswith("add"):
+
+        todo = user_action[4:]
+        with open(file_path, 'r') as file :  #reading the previous saved data from file
+            todos = file.readlines() #adding those data in todos list
+            todos.append(todo + '\n') #New input got appended in the list 
+        
+        
+        with open(file_path, 'w') as file: #Start overwritting that file
+            file.writelines(todos) #Rewrite the whole file with new input in it
+
+
+        '''
+        Our current workflow is like this:
+        The file saved before is opened, its data is read and saved in a list
+        After which the new input is appended in that new list. 
+        Which is list is later written in the file. So the file has the new appended data of the list as well  
+        '''
+
+
+    elif user_action.startswith("show"):
+        
+        with open(file_path, 'r') as file :
+            todos = file.readlines()
+        
+
+        for index, todo in enumerate(todos):
+            print(f"{index+1}-{todo}", end="")
+        
+        print()
+
+
+    elif user_action.startswith("edit"):
+        try:   
+            number = int(user_action[5:]) #slicing
             number -= 1
+
+            with open(file_path, 'r') as file :
+                todos = file.readlines()
+            
+
             new_todo = input("Please enter a new todo:")
-            todos[number] = new_todo
-            print("Your list has been updated! ")
-        case "exit":
-            break
-        case "complete":
-            num = int(input("Which index is completed:"))
-            # num -= 1
-            # # todos.remove(todos[num])
+            todos[number] = new_todo + '\n'
+
+            with open(file_path, 'w') as file:
+                file.writelines(todos)
+
+            print("Your list has been updated! ") 
+        
+        except:
+            print("Your command is not valid")
+            continue
+
+
+    elif user_action.startswith("complete"):
+        try:
+            num = int(user_action[9:]) #slicing
+
+            with open(file_path, 'r') as file :
+                todos = file.readlines()
+
             todos.pop(num-1)
-            print("Your task is marked complete")
-        case blah_blah:
-            print("Please enter a valid command")
+
+            with open(file_path, 'w') as file:
+                file.writelines(todos)
+            
+            print("Your task is completed! Remaining are:")
+            
+            for index, todo in enumerate(todos):
+                print(f"{index+1}-{todo}", end="")
+            
+            print()
+
+        except IndexError:
+            print("Please enter correct index number")
+            continue
+        except:
+            print("Your command is not valid")
+            continue
+
+
+    elif user_action.startswith("exit"):
+        break
+
+
+    else:
+        print("Please enter a valid command")
 
 
 print("Bye bye")
