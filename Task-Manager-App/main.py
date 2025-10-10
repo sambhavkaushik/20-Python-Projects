@@ -1,29 +1,33 @@
-def addTotal(num):
-    sum = 0
-    for i in range(0,num):
-        sum += i
-
-    return sum   
-
-
 file_path = r"C:\Users\sambh\OneDrive\Desktop\Python code\20-Python-Projects\Task-Manager-App\todos.txt" #file apth
+
+
+def readFile():
+    with open(file_path, 'r') as file:
+        todos = file.readlines()
+    return todos
+
+
+def writeFile(todos):
+    with open(file_path, 'w') as file:
+        file.writelines(todos)
+    
 
 while True:
     user_action = input("Enter add, show,edit, complete or exit:")
 
-
     if user_action.startswith("add"):
 
         todo = user_action[4:]
-        with open(file_path, 'r') as file :  #reading the previous saved data from file
-            todos = file.readlines() #adding those data in todos list
-            todos.append(todo + '\n') #New input got appended in the list 
+        todos = readFile()#reading the previous saved data from file
+            #adding those data in todos list
+        todos.append(todo + '\n') #New input got appended in the list 
         
         
-        with open(file_path, 'w') as file: #Start overwritting that file
-            file.writelines(todos) #Rewrite the whole file with new input in it
+        writeFile(todos) #Start overwritting that file
+             #Rewrite the whole file with new input in it
 
-
+        print("Your task has been added succesfully!")
+        
         '''
         Our current workflow is like this:
         The file saved before is opened, its data is read and saved in a list
@@ -34,10 +38,8 @@ while True:
 
     elif user_action.startswith("show"):
         
-        with open(file_path, 'r') as file :
-            todos = file.readlines()
+        todos = readFile()
         
-
         for index, todo in enumerate(todos):
             print(f"{index+1}-{todo}", end="")
         
@@ -49,15 +51,12 @@ while True:
             number = int(user_action[5:]) #slicing
             number -= 1
 
-            with open(file_path, 'r') as file :
-                todos = file.readlines()
-            
+            todos = readFile()
 
             new_todo = input("Please enter a new todo:")
             todos[number] = new_todo + '\n'
 
-            with open(file_path, 'w') as file:
-                file.writelines(todos)
+            writeFile(todos)
 
             print("Your list has been updated! ") 
         
@@ -70,13 +69,11 @@ while True:
         try:
             num = int(user_action[9:]) #slicing
 
-            with open(file_path, 'r') as file :
-                todos = file.readlines()
+            todos = readFile()
 
             todos.pop(num-1)
 
-            with open(file_path, 'w') as file:
-                file.writelines(todos)
+            writeFile(todos)
             
             print("Your task is completed! Remaining are:")
             
