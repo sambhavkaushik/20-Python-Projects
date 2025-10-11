@@ -1,4 +1,4 @@
-FILE_PATH = r"C:\Users\sambh\OneDrive\Desktop\Python code\20-Python-Projects\Task-Manager-App\GUI-Version\GUI-Version\todos.txt" #file apth
+FILE_PATH = r"C:\Users\sambh\OneDrive\Desktop\Python code\20-Python-Projects\Task-Manager-App\GUI-Version\todos.txt" #file apth
 
 
 def readFile():

@@ -1,68 +1,46 @@
-from functions import readFile, writeFile
-import time
+import FreeSimpleGUI as fsg
+import functions 
 
-samay = time.strftime("%d %b, %Y; %H:%M")
-print(samay)
-
+label = fsg.Text("Type in a To-Do")
+input_box = fsg.InputText(tooltip="Enter To-Do", key="todo")
+add_button = fsg.Button("Add")
+exit_button = fsg.Button("Exit")
+list_box = fsg.Listbox(values=functions.readFile(), key='todos', 
+                       enable_events=True, size=[45, 10])
+edit_button = fsg.Button("Edit")
+  
+window = fsg.Window("My To Do App", 
+                    layout=[[label, input_box, add_button], 
+                            [exit_button], 
+                            [list_box, edit_button]],
+                    font=('Helvetica', 20))
 while True:
-    user_action = input("Enter add, show,edit, complete or exit:")
+    event, values = window.read()
 
-    if user_action.startswith("add"):
-        todo = user_action[4:]
-        todos = readFile()
-        todos.append(todo + '\n') #New input got appended in the list 
-        writeFile(todos)    
-        print("Your task has been added succesfully!")
+    if event == "Add":
+        todos = functions.readFile()
+        new_todo = values['todo'] + '\n'
+        todos.append(new_todo)
+        functions.writeFile(todos)
+        window["todos"].update(values=todos)
 
-        '''
-        Our current workflow is like this:
-        The file saved before is opened, its data is read and saved in a list
-        After which the new input is appended in that new list. 
-        Which is list is later written in the file. So the file has the new appended data of the list as well  
-        '''
+    if event == "Edit":
+        todo_to_edit = values['todos'][0]
+        new_todo = values['todo']
+        todos = functions.readFile()
+        index = todos.index(todo_to_edit)
+        todos[index] = new_todo
+        functions.writeFile(todos)
+        window['todos'].update(values=todos)
+    
+    if event == 'todos':
+        window['todo'].update(value=values['todos'][0])
 
-    elif user_action.startswith("show"):
-        todos = readFile()
-        for index, todo in enumerate(todos):
-            print(f"{index+1}-{todo}", end="")
-        print()
 
-    elif user_action.startswith("edit"):
-        try:   
-            number = int(user_action[5:]) #slicing
-            number -= 1
-            todos = readFile()
-            new_todo = input("Please enter a new todo:")
-            todos[number] = new_todo + '\n'
-            writeFile(todos)
-            print("Your list has been updated! ") 
-        
-        except:
-            print("Your command is not valid")
-            continue
-
-    elif user_action.startswith("complete"):
-        try:
-            num = int(user_action[9:]) #slicing
-            todos = readFile()
-            todos.pop(num-1)
-            writeFile(todos)
-            print("Your task is completed! Remaining are:")
-            for index, todo in enumerate(todos):
-                print(f"{index+1}-{todo}", end="")
-            print()
-
-        except IndexError:
-            print("Please enter correct index number")
-            continue
-        except:
-            print("Your command is not valid")
-            continue
-
-    elif user_action.startswith("exit"):
+    if event == "Exit":
         break
 
-    else:
-        print("Please enter a valid command")
-
-print("Bye bye")
+    if fsg.WIN_CLOSED:
+        break
+print("Helloo world")
+window.close()
