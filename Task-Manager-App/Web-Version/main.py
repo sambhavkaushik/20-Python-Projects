@@ -1,1 +1,5 @@
 print("Hello world")
+print("HIIII")
+print("HOlaaa")
+print("NI haoo")
+print("Namaste")
