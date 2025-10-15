@@ -42,8 +42,4 @@ while True:
 
     if fsg.WIN_CLOSED:
         break
-print("Helloo world")
-print("YEssssss")
-print("HOLAAAAAAAA")
-print("Ni haoooo ma")
 window.close()
